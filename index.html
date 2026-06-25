@@ -136,7 +136,8 @@
     footer a:hover{color:var(--accent)}
 
     /* ── FIXED TOPBAR (lang + pdf) ── */
-    .topbar{position:fixed;top:14px;right:14px;z-index:1000;display:flex;gap:8px;align-items:center}
+    .topbar{position:fixed;top:14px;right:14px;z-index:1000;display:flex;gap:8px;align-items:center;transition:transform .35s ease}
+    .topbar.tb-hide{transform:translateY(-170%)}
     .topbar .lang-btn{padding:6px 15px;font-size:12px;background:rgba(250,247,240,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
     .topbar .lang-btn.on{background:var(--accent);color:#fff}
     .pdf-btn{padding:6px 15px;background:var(--dark);color:#fff;border:none;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:.3s;backdrop-filter:blur(8px)}
@@ -468,8 +469,8 @@
   <!-- ── PROJECTS ── -->
   <div class="page alt">
     <div class="headline"><h1 id="proj-ht">ÖNE ÇIKAN PROJELER</h1><h5 id="proj-hs">Kendi geliştirdiğim araçlar</h5></div>
-    <div id="proj-tr" style="display:none"><div class="proj-grid"><div class="proj-card"><div class="proj-top"><div class="proj-name">Hero Generator</div><div class="proj-type">SaaS · REKLAM TEK.</div></div><div class="proj-desc">Mücevher ürün URL'lerini tarayıp markaya özel reklam görselleri üreten SaaS aracı. Manuel kreatif üretimini uçtan uca otomatikleştirir.</div><div class="proj-tech"><span class="ptag">Next.js</span><span class="ptag">Playwright</span><span class="ptag">Satori</span><span class="ptag">Railway</span></div></div><div class="proj-card"><div class="proj-top"><div class="proj-name">SkillB</div><div class="proj-type">WEB PLATFORMU</div></div><div class="proj-desc">Yeniden kullanılabilir AI skill kütüphanesi platformu — skill'leri paketleyip paylaşmak için.</div><div class="proj-tech"><span class="ptag">Next.js</span><span class="ptag">Vercel</span></div><a class="proj-link" href="https://skillb-project.vercel.app" target="_blank">skillb-project.vercel.app <i class="fa fa-arrow-right"></i></a></div></div><div class="proj-foot"><a href="https://hakansagiroglubusiness.github.io/CV/Portfolio/" target="_blank">Tüm projeler & portföy <i class="fa fa-arrow-right"></i></a></div></div>
-    <div id="proj-en"><div class="proj-grid"><div class="proj-card"><div class="proj-top"><div class="proj-name">Hero Generator</div><div class="proj-type">SaaS · AD TECH</div></div><div class="proj-desc">A SaaS tool that scrapes jewelry product URLs and generates brand-specific ad creatives, automating manual creative production end-to-end.</div><div class="proj-tech"><span class="ptag">Next.js</span><span class="ptag">Playwright</span><span class="ptag">Satori</span><span class="ptag">Railway</span></div></div><div class="proj-card"><div class="proj-top"><div class="proj-name">SkillB</div><div class="proj-type">WEB PLATFORM</div></div><div class="proj-desc">A reusable AI skill-library platform for packaging and sharing skills.</div><div class="proj-tech"><span class="ptag">Next.js</span><span class="ptag">Vercel</span></div><a class="proj-link" href="https://skillb-project.vercel.app" target="_blank">skillb-project.vercel.app <i class="fa fa-arrow-right"></i></a></div></div><div class="proj-foot"><a href="https://hakansagiroglubusiness.github.io/CV/Portfolio/" target="_blank">All projects & portfolio <i class="fa fa-arrow-right"></i></a></div></div>
+    <div id="proj-tr" style="display:none"><div class="proj-grid"><div class="proj-card"><div class="proj-top"><div class="proj-name">Hero Generator</div><div class="proj-type">SaaS · REKLAM TEK.</div></div><div class="proj-desc">Mücevher ürün URL'lerini tarayıp markaya özel reklam görselleri üreten SaaS aracı. Manuel kreatif üretimini uçtan uca otomatikleştirir.</div><div class="proj-tech"><span class="ptag">Next.js</span><span class="ptag">Playwright</span><span class="ptag">Satori</span><span class="ptag">Railway</span></div></div><div class="proj-card"><div class="proj-top"><div class="proj-name">SkillB</div><div class="proj-type">WEB PLATFORMU</div></div><div class="proj-desc">Yeniden kullanılabilir AI skill kütüphanesi platformu — skill'leri paketleyip paylaşmak için.</div><div class="proj-tech"><span class="ptag">Next.js</span><span class="ptag">Vercel</span></div><a class="proj-link" href="https://skillb-project.vercel.app" target="_blank">skillb-project.vercel.app <i class="fa fa-arrow-right"></i></a></div></div></div>
+    <div id="proj-en"><div class="proj-grid"><div class="proj-card"><div class="proj-top"><div class="proj-name">Hero Generator</div><div class="proj-type">SaaS · AD TECH</div></div><div class="proj-desc">A SaaS tool that scrapes jewelry product URLs and generates brand-specific ad creatives, automating manual creative production end-to-end.</div><div class="proj-tech"><span class="ptag">Next.js</span><span class="ptag">Playwright</span><span class="ptag">Satori</span><span class="ptag">Railway</span></div></div><div class="proj-card"><div class="proj-top"><div class="proj-name">SkillB</div><div class="proj-type">WEB PLATFORM</div></div><div class="proj-desc">A reusable AI skill-library platform for packaging and sharing skills.</div><div class="proj-tech"><span class="ptag">Next.js</span><span class="ptag">Vercel</span></div><a class="proj-link" href="https://skillb-project.vercel.app" target="_blank">skillb-project.vercel.app <i class="fa fa-arrow-right"></i></a></div></div></div>
   </div>
 
   <!-- ── EDU & CERTS ── -->
@@ -536,11 +537,17 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
+var lastS=0;
 $(window).scroll(function(){
   var s = $(window).scrollTop();
   $('#bg').css('top', -(s * 0.08) + 'px');
   var op = 1 - (s / 520);
   $('#hc').css({'opacity': Math.max(op, 0), 'transform': 'translateY(' + (s * 0.12) + 'px)'});
+  if(window.innerWidth<=640){
+    if(s>lastS && s>200){ $('.topbar').addClass('tb-hide'); }
+    else { $('.topbar').removeClass('tb-hide'); }
+  } else { $('.topbar').removeClass('tb-hide'); }
+  lastS=s;
 });
 var barsAnimated=false;
 function checkBars(){
