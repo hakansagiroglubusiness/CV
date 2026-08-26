@@ -1,0 +1,40 @@
+name: Build CV PDFs
+
+on:
+  push:
+    branches: [main]
+    paths: [make_cv.py]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq fonts-dejavu-core
+          pip install --quiet reportlab
+
+      - name: Generate CV PDFs
+        run: python make_cv.py .
+
+      - name: Commit updated PDFs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Hakan-Sagiroglu-CV-EN.pdf Hakan-Sagiroglu-CV-TR.pdf
+          if git diff --cached --quiet; then
+            echo "PDFs unchanged, nothing to commit."
+          else
+            git commit -m "Regenerate CV PDFs from make_cv.py"
+            git push
+          fi
