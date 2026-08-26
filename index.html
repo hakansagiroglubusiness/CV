@@ -287,7 +287,7 @@
       + '<div class="bgfx '+(isDark?'d':'l')+'" aria-hidden="true"></div>'
       + '<div class="pg no-print" style="position:fixed;top:0;left:0;right:0;height:3px;background:'+c.accent+';z-index:100;"></div>'
       // NAV
-      + '<div class="no-print" style="position:sticky;top:0;z-index:50;background:'+c.navBg+';backdrop-filter:blur(18px);border-bottom:1px solid '+c.line+';">'
+      + '<div class="no-print" style="position:sticky;top:0;z-index:50;background:'+c.navBg+';backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid '+c.line+';">'
         + '<div style="max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px clamp(20px,4vw,40px);flex-wrap:wrap;">'
           + '<span style="font-size:14px;font-weight:800;letter-spacing:-0.01em;">Hakan Sağıroğlu</span>'
           + '<div style="display:flex;align-items:center;gap:10px;">'
@@ -353,7 +353,7 @@
         + '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:36px;">'
           + '<a href="mailto:sagirogluhakan@outlook.com" data-mag="1" style="font-size:14px;font-weight:700;padding:14px 28px;border-radius:999px;background:'+c.grad+';color:'+c.onAccent+';transition:transform 0.25s cubic-bezier(0.22,1,0.36,1);">sagirogluhakan@outlook.com</a>'
           + '<a href="tel:+905550165335" data-mag="1" style="font-size:14px;font-weight:700;padding:14px 28px;border-radius:999px;border:1.5px solid '+c.line+';color:'+c.fgSoft+';transition:transform 0.25s cubic-bezier(0.22,1,0.36,1);">+90 555 016 53 35</a>'
-          + '<button data-print="1" data-mag="1" class="no-print" style="cursor:pointer;font-size:14px;font-weight:700;padding:14px 28px;border-radius:999px;border:1.5px solid '+c.line+';background:transparent;color:'+c.fgSoft+';transition:transform 0.25s cubic-bezier(0.22,1,0.36,1);">'+esc(t.download)+' ↓</button>'
+          + '<a href="Hakan-Sagiroglu-CV-'+(lang==='tr'?'TR':'EN')+'.pdf" download="Hakan-Sagiroglu-CV-'+(lang==='tr'?'TR':'EN')+'.pdf" data-mag="1" class="no-print" style="font-size:14px;font-weight:700;padding:14px 28px;border-radius:999px;border:1.5px solid '+c.line+';background:transparent;color:'+c.fgSoft+';transition:transform 0.25s cubic-bezier(0.22,1,0.36,1);">'+esc(t.download)+' ↓</a>'
         + '</div>'
         + '<div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:clamp(50px,7vw,80px);padding-top:24px;border-top:1px solid '+c.line+';font-family:'+MONO+';font-size:12px;color:'+c.fgMut+';"><span>© 2026 Hakan Sağıroğlu</span><span>Bursa, TR · '+esc(t.remote)+'</span></div>'
       + '</div></div>'
@@ -420,11 +420,12 @@
   function wire(c) {
     document.querySelectorAll('[data-lang]').forEach(function(b){ b.onclick = function(){ save({ lang: b.getAttribute('data-lang') }); }; });
     var th = document.querySelector('[data-theme]'); if (th) th.onclick = function(){ save({ dark: !state.dark }); };
-    var pr = document.querySelector('[data-print]'); if (pr) pr.onclick = function(){ window.print(); };
     document.querySelectorAll('[data-job]').forEach(function(el){
       el.onclick = function(){ var i = el.getAttribute('data-job'); state.open[i] = !state.open[i]; render(); };
     });
-    document.querySelectorAll('.chip').forEach(function(el){
+    var canHover = true;
+    try { canHover = window.matchMedia('(hover: hover)').matches; } catch (e) {}
+    if (canHover) document.querySelectorAll('.chip').forEach(function(el){
       el.onmouseenter = function(){ el.style.background = c.accent; el.style.color = c.onAccent; el.style.transform = 'translateY(-3px)'; };
       el.onmouseleave = function(){ el.style.background = c.chipBg; el.style.color = c.fgSoft; el.style.transform = 'translateY(0)'; };
     });
