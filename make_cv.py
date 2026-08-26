@@ -179,10 +179,6 @@ EN = dict(
         dict(name='PlanB Ads', stack='Google Ads · Meta · TikTok',
              desc='An ad management and automation panel that runs Google, Meta, and TikTok campaigns from a single '
                   'interface — monitoring, optimization actions, and automation in one place.'),
-        dict(name='Çırak', stack='Next.js · TypeScript · PostgreSQL · DataSlayer MCP',
-             desc='A Performance Marketing Operating System that turns "where should budget go?" into a hierarchical, '
-                  'evidence-linked allocation plan on marginal returns. A deterministic engine computes; the LLM only '
-                  'narrates — no hallucinated metrics.'),
         dict(name='Klyr Publish', stack='Next.js · Playwright · Sharp · FFmpeg · Meta API',
              desc='Generates brand-accurate static + video ad creatives in 4 formats from a product URL and publishes '
                   'them to Meta as PAUSED drafts — cutting creative prep + campaign setup from 1–2 days to ~5 minutes. '
@@ -262,10 +258,6 @@ TR = dict(
         dict(name='PlanB Ads', stack='Google Ads · Meta · TikTok',
              desc='Google, Meta ve TikTok kampanyalarını tek panelden yöneten ve optimize eden reklam yönetim ve '
                   'otomasyon paneli — izleme, optimizasyon aksiyonları ve otomasyon tek yerde.'),
-        dict(name='Çırak', stack='Next.js · TypeScript · PostgreSQL · DataSlayer MCP',
-             desc='"Bütçe nereye?" sorusunu marjinal getiri üzerinden hiyerarşik, kanıta bağlı bir tahsis planına '
-                  'çeviren Performance Marketing İşletim Sistemi. Deterministik motor hesaplar, LLM yalnızca anlatır '
-                  '— halüsinasyonlu metrik yok.'),
         dict(name='Klyr Publish', stack='Next.js · Playwright · Sharp · FFmpeg · Meta API',
              desc='Ürün URL’sinden 4 formatta marka-sadık statik + video reklam üretip Meta’ya PAUSED taslak olarak '
                   'yayınlar — kreatif hazırlık + kampanya kurulumunu 1–2 günden ~5 dakikaya indirir. Ücretli AI '
