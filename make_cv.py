@@ -173,9 +173,6 @@ EN = dict(
         dict(name='PlanB SEO', stack='AI · Search Console · GA4',
              desc='AI-powered SEO analysis and reporting automation: crawls the site, surfaces keyword and content '
                   'opportunities, and turns Search Console and GA4 data into automated SEO performance reports.'),
-        dict(name='Viby', stack='Chrome Extension · AI',
-             desc='A Chrome extension that sees the browser screen in real time, answers in context, and can take '
-                  'over browser control to act when needed.'),
         dict(name='PlanB Ads', stack='Google Ads · Meta · TikTok',
              desc='An ad management and automation panel that runs Google, Meta, and TikTok campaigns from a single '
                   'interface — monitoring, optimization actions, and automation in one place.'),
@@ -183,10 +180,6 @@ EN = dict(
              desc='Generates brand-accurate static + video ad creatives in 4 formats from a product URL and publishes '
                   'them to Meta as PAUSED drafts — cutting creative prep + campaign setup from 1–2 days to ~5 minutes. '
                   'Zero paid AI-API dependency (fully local render).'),
-        dict(name='AI Burger', stack='Next.js · TypeScript · Prisma · SQLite · Playwright',
-             desc='AI-native food ordering pilot for a burger restaurant in Bursa: customers describe what they crave '
-                  'and get a personalized burger built strictly from real kitchen inventory. A deterministic engine '
-                  'proposes, validates and prices every recipe.'),
         dict(name='SkillB', stack='Next.js · Vercel', link='skillb-project.vercel.app',
              desc='A reusable AI skill-library platform for packaging and sharing skills.'),
     ],
@@ -252,9 +245,6 @@ TR = dict(
         dict(name='PlanB SEO', stack='AI · Search Console · GA4',
              desc='AI destekli SEO analizi ve raporlama otomasyonu: siteyi tarar, anahtar kelime ve içerik '
                   'fırsatlarını çıkarır; Search Console ve GA4 verisini otomatik SEO performans raporlarına dönüştürür.'),
-        dict(name='Viby', stack='Chrome Extension · AI',
-             desc='Tarayıcı ekranını gerçek zamanlı gören, bağlam içinde yanıtlayan ve gerektiğinde tarayıcı '
-                  'kontrolünü devralıp aksiyon alabilen bir Chrome eklentisi.'),
         dict(name='PlanB Ads', stack='Google Ads · Meta · TikTok',
              desc='Google, Meta ve TikTok kampanyalarını tek panelden yöneten ve optimize eden reklam yönetim ve '
                   'otomasyon paneli — izleme, optimizasyon aksiyonları ve otomasyon tek yerde.'),
@@ -262,10 +252,6 @@ TR = dict(
              desc='Ürün URL’sinden 4 formatta marka-sadık statik + video reklam üretip Meta’ya PAUSED taslak olarak '
                   'yayınlar — kreatif hazırlık + kampanya kurulumunu 1–2 günden ~5 dakikaya indirir. Ücretli AI '
                   'API’sine sıfır bağımlılık (tamamen yerel render).'),
-        dict(name='AI Burger', stack='Next.js · TypeScript · Prisma · SQLite · Playwright',
-             desc='Bursa’daki bir burger restoranı için AI-native sipariş pilotu: müşteri canının ne çektiğini '
-                  'anlatır, mutfağın gerçek envanterinden kişiselleştirilmiş bir burger kurulur. Deterministik motor '
-                  'her tarifi önerir, doğrular ve fiyatlandırır.'),
         dict(name='SkillB', stack='Next.js · Vercel', link='skillb-project.vercel.app',
              desc='Yeniden kullanılabilir AI skill kütüphanesi — skill’leri paketleyip paylaşmak için platform.'),
     ],
