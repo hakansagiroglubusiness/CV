@@ -170,12 +170,24 @@ EN = dict(
         dict(name='Operations', items=['Account Management','Client Communication','Reporting','360° Strategy','English (Advanced)']),
     ],
     projects=[
+        dict(name='Diamond Dashboard', stack='Google Ads · Meta · GA4',
+             desc='Intraday pacing dashboard for a jewelry brand: today’s Google Ads and Meta spend against the '
+                  '14-day same-hour baseline, the campaigns drifting furthest from expected and when each budget runs out.'),
+        dict(name='Diamond Generator', stack='Higgsfield · Seedance · Claude Artifacts',
+             desc='Turns a product URL into on-brand hero creatives for three jewelry brands — locked brand templates, '
+                  'Higgsfield scene after credit approval, 1:1 / 4:5 / 9:16 statics and jingle videos in one ZIP.'),
+        dict(name='PlanB Image Generator', stack='PSD/PSB · Canvas · Next.js',
+             desc='Resizes approved campaign key visuals into 21 Google Ads, Meta and CRM formats per campaign from one '
+                  'screen; in production use for a national menswear retailer.'),
         dict(name='PlanB SEO', stack='AI · Search Console · GA4',
              desc='AI-powered SEO analysis and reporting automation: crawls the site, surfaces keyword and content '
                   'opportunities, and turns Search Console and GA4 data into automated SEO performance reports.'),
         dict(name='PlanB Ads', stack='Google Ads · Meta · TikTok',
              desc='An ad management and automation panel that runs Google, Meta, and TikTok campaigns from a single '
                   'interface — monitoring, optimization actions, and automation in one place.'),
+        dict(name='Auditore', stack='Next.js · GA4 Admin & Data API · SQLite',
+             desc='Read-only GA4 measurement audit workspace: automated checks, analyst review with hashed evidence '
+                  'and a client-ready report.'),
         dict(name='Klyr Publish', stack='Next.js · Playwright · Sharp · FFmpeg · Meta API',
              desc='Generates brand-accurate static + video ad creatives in 4 formats from a product URL and publishes '
                   'them to Meta as PAUSED drafts — cutting creative prep + campaign setup from 1–2 days to ~5 minutes. '
@@ -242,12 +254,24 @@ TR = dict(
         dict(name='Operasyon', items=['Hesap Yönetimi','Müşteri İletişimi','Raporlama','360° Strateji','İngilizce (İleri)']),
     ],
     projects=[
+        dict(name='Diamond Dashboard', stack='Google Ads · Meta · GA4',
+             desc='Bir mücevher markası için gün içi tempo panosu: bugünkü Google Ads ve Meta harcamasını son 14 günün '
+                  'aynı saatine göre kıyaslar, en çok sapan kampanyaları ve bütçelerin dolma saatini gösterir.'),
+        dict(name='Diamond Generator', stack='Higgsfield · Seedance · Claude Artifacts',
+             desc='Ürün linkinden üç mücevher markası için hero kreatif üretir — kilitli marka şablonları, kredi onayıyla '
+                  'Higgsfield sahnesi, 1:1 / 4:5 / 9:16 statik ve jingle’lı videolar tek ZIP’te.'),
+        dict(name='PlanB Image Generator', stack='PSD/PSB · Canvas · Next.js',
+             desc='Onaylı kampanya KV’lerini kampanya başına 21 Google Ads, Meta ve CRM formatına tek ekrandan '
+                  'dönüştürür; ulusal bir erkek giyim markasının kampanyalarında aktif kullanımda.'),
         dict(name='PlanB SEO', stack='AI · Search Console · GA4',
              desc='AI destekli SEO analizi ve raporlama otomasyonu: siteyi tarar, anahtar kelime ve içerik '
                   'fırsatlarını çıkarır; Search Console ve GA4 verisini otomatik SEO performans raporlarına dönüştürür.'),
         dict(name='PlanB Ads', stack='Google Ads · Meta · TikTok',
              desc='Google, Meta ve TikTok kampanyalarını tek panelden yöneten ve optimize eden reklam yönetim ve '
                   'otomasyon paneli — izleme, optimizasyon aksiyonları ve otomasyon tek yerde.'),
+        dict(name='Auditore', stack='Next.js · GA4 Admin & Data API · SQLite',
+             desc='Salt okunur GA4 ölçüm denetimi aracı: otomatik kontroller, kanıt özetli analist onayı ve müşteriye '
+                  'hazır rapor.'),
         dict(name='Klyr Publish', stack='Next.js · Playwright · Sharp · FFmpeg · Meta API',
              desc='Ürün URL’sinden 4 formatta marka-sadık statik + video reklam üretip Meta’ya PAUSED taslak olarak '
                   'yayınlar — kreatif hazırlık + kampanya kurulumunu 1–2 günden ~5 dakikaya indirir. Ücretli AI '
