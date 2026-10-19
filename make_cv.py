@@ -188,10 +188,6 @@ EN = dict(
         dict(name='Auditore', stack='Next.js · GA4 Admin & Data API · SQLite',
              desc='Read-only GA4 measurement audit workspace: automated checks, analyst review with hashed evidence '
                   'and a client-ready report.'),
-        dict(name='Klyr Publish', stack='Next.js · Playwright · Sharp · FFmpeg · Meta API',
-             desc='Generates brand-accurate static + video ad creatives in 4 formats from a product URL and publishes '
-                  'them to Meta as PAUSED drafts — cutting creative prep + campaign setup from 1–2 days to ~5 minutes. '
-                  'Zero paid AI-API dependency (fully local render).'),
         dict(name='SkillB', stack='Next.js · Vercel', link='skillb-project.vercel.app',
              desc='A reusable AI skill-library platform for packaging and sharing skills.'),
     ],
@@ -272,10 +268,6 @@ TR = dict(
         dict(name='Auditore', stack='Next.js · GA4 Admin & Data API · SQLite',
              desc='Salt okunur GA4 ölçüm denetimi aracı: otomatik kontroller, kanıt özetli analist onayı ve müşteriye '
                   'hazır rapor.'),
-        dict(name='Klyr Publish', stack='Next.js · Playwright · Sharp · FFmpeg · Meta API',
-             desc='Ürün URL’sinden 4 formatta marka-sadık statik + video reklam üretip Meta’ya PAUSED taslak olarak '
-                  'yayınlar — kreatif hazırlık + kampanya kurulumunu 1–2 günden ~5 dakikaya indirir. Ücretli AI '
-                  'API’sine sıfır bağımlılık (tamamen yerel render).'),
         dict(name='SkillB', stack='Next.js · Vercel', link='skillb-project.vercel.app',
              desc='Yeniden kullanılabilir AI skill kütüphanesi — skill’leri paketleyip paylaşmak için platform.'),
     ],
