@@ -151,7 +151,7 @@
       heroA:"I don't spend budgets.", heroB:'I scale them.',
       heroSub:"4+ years running paid media end-to-end for brands and agencies — $200K+ monthly budgets across six platforms, with AI and automation as infrastructure and ROAS as the only compass.",
       ctaPrimary:'Get in touch', remote:'Open to remote',
-      aboutLabel:'About', expLabel:'Experience', skillsLabel:'Skills', projLabel:'Projects', eduLabel:'Education',
+      aboutLabel:'About', expLabel:'Experience', skillsLabel:'Skills', projLabel:'Projects', eduLabel:'Education', photo:'Photo',
       aboutLead:'$200K+ monthly budgets. Full-funnel ownership. One mandate: ROAS. Across agency and brand, I learned not just to manage campaigns — but to grow them.',
       aboutBody:'While others build reports by hand, I run them through AI and automation systems in minutes. For premium D2C brands I own the entire operation — from performance analysis to category-level campaign architecture. I also build the internal tools that run it.',
       clientsLabel:'Clients —', footTitle:"Let's make the numbers", footEm:'work harder.', download:'Download PDF'
@@ -161,7 +161,7 @@
       heroA:'Bütçeyi harcamam.', heroB:'Ölçeklerim.',
       heroSub:'Ajans ve marka tarafında 4+ yıldır ücretli medyayı uçtan uca yönetiyorum — altı platformda aylık $200K+ bütçe, altyapıda AI ve otomasyon, pusulada yalnızca ROAS.',
       ctaPrimary:'İletişime geç', remote:'Uzaktan çalışmaya açık',
-      aboutLabel:'Hakkımda', expLabel:'Deneyim', skillsLabel:'Yetkinlikler', projLabel:'Projeler', eduLabel:'Eğitim',
+      aboutLabel:'Hakkımda', expLabel:'Deneyim', skillsLabel:'Yetkinlikler', projLabel:'Projeler', eduLabel:'Eğitim', photo:'Fotoğraf',
       aboutLead:'Aylık $200K+ bütçe. Uçtan uca sahiplik. Tek hedef: ROAS. Ajans ve marka tarafında kampanyayı sadece yönetmeyi değil, büyütmeyi öğrendim.',
       aboutBody:'Rakiplerim raporu elle hazırlarken ben AI ve otomasyon sistemleriyle süreci dakikalara indiriyorum. Premium D2C markalar için performans analizinden kategori bazlı kampanya mimarisine kadar operasyonun tamamı bende — üstelik operasyonu çalıştıran iç araçları da ben geliştiriyorum.',
       clientsLabel:'Müşteriler —', footTitle:'Rakamları birlikte', footEm:'büyütelim.', download:'PDF indir'
@@ -214,8 +214,8 @@
         {tag:'WEB PLATFORM', name:'SkillB', desc:'A reusable AI skill-library platform for packaging and sharing skills.', stack:'Next.js · Vercel', link:'skillb-project.vercel.app', linkHref:'https://skillb-project.vercel.app', media:'assets/projects/skillb.mp4'},
       ],
       education:[
-        {school:'Kadir Has University', degree:'BA — New Media', meta:'2018 — 2022 · GPA 3.00 · 100% English · 75% Scholarship'},
-        {school:'Vilnius Gediminas Technical University', degree:'Business Management', meta:'2016 — 2018 · 100% English · Vilnius, Lithuania'}
+        {school:'Kadir Has University', degree:'BA — New Media', meta:'2018 — 2022 · GPA 3.00 · 100% English · 75% Scholarship', img:'assets/edu/khas', alt:'Kadir Has University, Cibali campus on the Golden Horn', credit:'CeeGee · CC BY-SA 4.0', creditHref:'https://commons.wikimedia.org/wiki/File:KadirHasUniversity.JPG'},
+        {school:'Vilnius Gediminas Technical University', degree:'Business Management', meta:'2016 — 2018 · 100% English · Vilnius, Lithuania', img:'assets/edu/vgtu', alt:'Vilnius Gediminas Technical University central building', credit:'Naujausia Informacija · CC BY-SA 4.0', creditHref:'https://commons.wikimedia.org/wiki/File:VILNIUS_TECH_CentriniaiR%C5%ABmai.jpg'}
       ]
     },
     tr: {
@@ -263,8 +263,8 @@
         {tag:'WEB PLATFORMU', name:'SkillB', desc:'Yeniden kullanılabilir AI skill kütüphanesi — skill’leri paketleyip paylaşmak için platform.', stack:'Next.js · Vercel', link:'skillb-project.vercel.app', linkHref:'https://skillb-project.vercel.app', media:'assets/projects/skillb.mp4'},
       ],
       education:[
-        {school:'Kadir Has Üniversitesi', degree:'Lisans — Yeni Medya', meta:'2018 — 2022 · GPA 3.00 · %100 İngilizce · %75 Burs'},
-        {school:'Vilnius Gediminas Technical University', degree:'Business Management', meta:'2016 — 2018 · %100 İngilizce · Vilnius, Litvanya'}
+        {school:'Kadir Has Üniversitesi', degree:'Lisans — Yeni Medya', meta:'2018 — 2022 · GPA 3.00 · %100 İngilizce · %75 Burs', img:'assets/edu/khas', alt:'Kadir Has Üniversitesi, Haliç kıyısındaki Cibali kampüsü', credit:'CeeGee · CC BY-SA 4.0', creditHref:'https://commons.wikimedia.org/wiki/File:KadirHasUniversity.JPG'},
+        {school:'Vilnius Gediminas Technical University', degree:'Business Management', meta:'2016 — 2018 · %100 İngilizce · Vilnius, Litvanya', img:'assets/edu/vgtu', alt:'Vilnius Gediminas Teknik Üniversitesi merkez binası', credit:'Naujausia Informacija · CC BY-SA 4.0', creditHref:'https://commons.wikimedia.org/wiki/File:VILNIUS_TECH_CentriniaiR%C5%ABmai.jpg'}
       ]
     }
   };
@@ -321,9 +321,11 @@
     }).join('');
 
     var eduHtml = d.education.map(function(e){
-      return '<div class="si" style="border-top:1px solid '+c.line+';padding-top:20px;"><div style="font-size:16.5px;font-weight:800;">'+esc(e.school)+'</div>'
+      var img = e.img ? '<img src="'+e.img+'.webp" srcset="'+e.img+'-640.webp 640w, '+e.img+'.webp 1000w" sizes="(max-width: 700px) 100vw, 500px" alt="'+esc(e.alt)+'" width="1000" height="563" loading="lazy" decoding="async" class="zoomin" style="width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:13px;display:block;border:1px solid '+c.line+';background:'+c.cardBg+';margin-bottom:20px;">' : '';
+      var credit = e.credit ? '<a href="'+esc(e.creditHref)+'" target="_blank" rel="noopener" style="display:inline-block;font-family:'+MONO+';font-size:10.5px;color:'+c.fgMut+';margin-top:12px;">'+esc(t.photo)+': '+esc(e.credit)+' ↗</a>' : '';
+      return '<div class="si" style="'+(img ? '' : 'border-top:1px solid '+c.line+';padding-top:20px;')+'">'+img+'<div style="font-size:16.5px;font-weight:800;">'+esc(e.school)+'</div>'
         + '<div style="font-size:14px;font-weight:700;color:'+c.accent+';margin-top:5px;">'+esc(e.degree)+'</div>'
-        + '<div style="font-family:'+MONO+';font-size:12px;color:'+c.fgMut+';margin-top:8px;line-height:1.6;">'+esc(e.meta)+'</div></div>';
+        + '<div style="font-family:'+MONO+';font-size:12px;color:'+c.fgMut+';margin-top:8px;line-height:1.6;">'+esc(e.meta)+'</div>'+credit+'</div>';
     }).join('');
 
     function wm(text, side, cls) {
