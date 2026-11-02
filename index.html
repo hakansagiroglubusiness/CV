@@ -87,7 +87,7 @@
   @keyframes growX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @keyframes growY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
   .tl { animation: growY linear both; animation-timeline: view(); animation-range: cover 0% cover 85%; transform-origin: top; }
-  @supports not (animation-timeline: view()) { .rv, .px, .px2, .px3, .pxx, .pg, .tl, .heroExit, .bgfx, .si, .zoomin, .mask, .sx { animation: none; } .mask { clip-path: none; } }
+  @supports not (animation-timeline: view()) { .rv, .px, .px2, .px3, .pxx, .pg, .tl, .heroExit, .bgfx, .si, .zoomin, .mask, .sx { animation: none; } .mask { clip-path: none; } .pg { display: none; } }
   @media (prefers-reduced-motion: reduce) { .px, .px2, .px3, .pxx, .heroExit, .bgfx, .zoomin, .sx { animation: none !important; } .mask { animation: none !important; clip-path: none !important; } }
   [data-mag] { position: relative; overflow: hidden; isolation: isolate; }
   [data-mag]::after { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; pointer-events: none;
@@ -132,6 +132,24 @@
     .pgrid > .si:last-child:nth-child(odd) > .vwrap { grid-row: 1 / span 8; align-self: start; }
   }
   [data-job]:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; border-radius: 6px; }
+  /* Theme switch: the circle reveal replaces the default cross-fade */
+  .vt-theme::view-transition-old(root), .vt-theme::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+  ::view-transition-group(root) { animation-duration: 0.4s; }
+  /* Project cards: cursor spotlight + a light arc circling the border (mouse devices only) */
+  @property --pa { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+  @keyframes pspin { to { --pa: 360deg; } }
+  @media (hover: hover) and (pointer: fine) {
+    .pcard { position: relative; isolation: isolate; }
+    .pcard::before, .pcard::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity 0.45s ease; }
+    .pcard::before { z-index: -1; background: radial-gradient(480px circle at var(--mx, 50%) var(--my, 50%), var(--spot), transparent 62%); }
+    .pcard::after { padding: 1.5px; background: conic-gradient(from var(--pa), transparent 0deg 200deg, var(--edge) 300deg, transparent 360deg);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude;
+      animation: pspin 3.6s linear infinite paused; }
+    .pcard:hover::before, .pcard:hover::after { opacity: 1; }
+    .pcard:hover::after { animation-play-state: running; }
+  }
+  @media (prefers-reduced-motion: reduce) { .pcard::after { animation: none; } }
 </style>
 </head>
 <body>
@@ -145,8 +163,8 @@
   } catch (e) {}
 
   var COLORS = {
-    dark: { bg:'#0F1013', fg:'#ECEEF1', fgSoft:'#A9AEB8', fgMut:'#80858E', line:'rgba(236,238,241,0.12)', navBg:'rgba(15,16,19,0.75)', accent:'#C4CAD2', accentHover:'#DCE0E6', chipBg:'#1C1F25', cardBg:'#191B20', footerBg:'#0B0C0E', watermark:'rgba(236,238,241,0.04)', grad:'linear-gradient(100deg,#FFFFFF,#CFD5DD 38%,#9198A3 72%,#EDF1F6)', onAccent:'#0F1013' },
-    light: { bg:'#F7F8FA', fg:'#1C2026', fgSoft:'#565D67', fgMut:'#666C76', line:'rgba(28,32,38,0.12)', navBg:'rgba(247,248,250,0.75)', accent:'#5B6470', accentHover:'#404853', chipBg:'#EDEFF2', cardBg:'#F1F3F6', footerBg:'#F1F3F6', watermark:'rgba(28,32,38,0.05)', grad:'linear-gradient(100deg,#6B7480,#5B6470 50%,#454D58)', onAccent:'#F7F8FA' }
+    dark: { bg:'#0F1013', fg:'#ECEEF1', fgSoft:'#A9AEB8', fgMut:'#80858E', line:'rgba(236,238,241,0.12)', navBg:'rgba(15,16,19,0.75)', accent:'#C4CAD2', accentHover:'#DCE0E6', chipBg:'#1C1F25', cardBg:'#191B20', footerBg:'#0B0C0E', watermark:'rgba(236,238,241,0.04)', grad:'linear-gradient(100deg,#FFFFFF,#CFD5DD 38%,#9198A3 72%,#EDF1F6)', onAccent:'#0F1013', spot:'rgba(255,255,255,0.1)', edge:'rgba(236,238,241,0.75)' },
+    light: { bg:'#F7F8FA', fg:'#1C2026', fgSoft:'#565D67', fgMut:'#666C76', line:'rgba(28,32,38,0.12)', navBg:'rgba(247,248,250,0.75)', accent:'#5B6470', accentHover:'#404853', chipBg:'#EDEFF2', cardBg:'#F1F3F6', footerBg:'#F1F3F6', watermark:'rgba(28,32,38,0.05)', grad:'linear-gradient(100deg,#6B7480,#5B6470 50%,#454D58)', onAccent:'#F7F8FA', spot:'rgba(255,255,255,0.9)', edge:'rgba(91,100,112,0.7)' }
   };
 
   var PHRASES = {
@@ -298,6 +316,9 @@
   var POSTERS = { 'Diamond Dashboard':'assets/projects/diamond-dashboard.webp', 'Diamond Generator':'assets/projects/diamond-generator.webp', 'PlanB Image Generator':'assets/projects/planb-image-generator.webp', 'Auditore':'assets/projects/auditore.webp', 'PlanB SEO':'assets/projects/planb-seo.webp', 'PlanB Ads':'assets/projects/planb-ads.webp', 'SkillB':'assets/projects/skillb.webp', };
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+  // Entrance effects (hero fade, stat count-up, chip reveal) play once per page load,
+  // not again on every re-render from a theme, language or accordion toggle.
+  var booted = false, statsCounted = false, chipsShown = false;
   function render() {
     var lang = state.lang, isDark = state.dark;
     var c = isDark ? COLORS.dark : COLORS.light;
@@ -337,7 +358,7 @@
     var projHtml = d.projects.map(function(pr){
       var linkHtml = pr.link ? '<a href="'+esc(pr.linkHref)+'" target="_blank" rel="noopener" style="display:inline-block;padding:4px 0;font-size:13px;font-weight:700;color:'+c.accent+';">'+esc(pr.link)+' ↗</a>' : '';
       var mediaHtml = pr.media ? '<video class="zoomin" data-lazy="1" muted loop playsinline preload="none" poster="'+(POSTERS[pr.name]||'')+'" aria-label="'+esc(pr.name)+' demo" style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:13px;background:#0f0f10;display:block;border:1px solid '+c.line+';"><source src="'+pr.media+'" type="video/mp4"></video>' : (pr.img ? '<img class="zoomin" src="'+pr.img+'" alt="'+esc(pr.name)+' homepage" loading="lazy" style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:13px;background:#0f0f10;display:block;border:1px solid '+c.line+';">' : '');
-      return '<div class="si" style="border-radius:22px;background:'+c.cardBg+';padding:clamp(20px,2.6vw,26px);display:flex;flex-direction:column;gap:13px;">'
+      return '<div class="si pcard" style="--spot:'+c.spot+';--edge:'+c.edge+';border-radius:22px;background:'+c.cardBg+';padding:clamp(20px,2.6vw,26px);display:flex;flex-direction:column;gap:13px;">'
         + (mediaHtml ? '<div class="vwrap">'+mediaHtml+'</div>' : '')
         + '<div class="tg" style="font-family:'+MONO+';font-size:11px;letter-spacing:0.12em;color:'+c.accent+';">'+esc(pr.tag)+'</div>'
         + '<div style="font-size:21px;font-weight:800;letter-spacing:-0.015em;">'+esc(pr.name)+'</div>'
@@ -362,9 +383,9 @@
 
     var html = '<div style="position:relative;z-index:0;background:'+c.bg+';color:'+c.fg+';min-height:100vh;transition:background 0.4s,color 0.4s;overflow-x:clip;">'
       + '<div class="bgfx '+(isDark?'d':'l')+'" aria-hidden="true"></div>'
-      + '<div class="pg no-print" style="position:fixed;top:0;left:0;right:0;height:3px;background:'+c.accent+';z-index:100;"></div>'
       // NAV
       + '<div class="no-print" style="position:sticky;top:0;z-index:50;background:'+c.navBg+';backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid '+c.line+';">'
+        + '<div class="pg" aria-hidden="true" style="position:absolute;left:0;right:0;bottom:-1px;height:2px;background:'+c.grad+';"></div>'
         + '<div class="navi" style="max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px clamp(20px,4vw,40px);flex-wrap:wrap;">'
           + '<span style="font-size:14px;font-weight:800;letter-spacing:-0.01em;white-space:nowrap;">Hakan Sağıroğlu</span>'
           + '<div class="navr" style="display:flex;align-items:center;gap:10px;">'
@@ -382,7 +403,7 @@
         + '<div class="hbg '+(isDark?'d':'l')+'" aria-hidden="true"><picture><source media="(max-width: 767px)" srcset="assets/hero/curve-m.webp"><img src="assets/hero/curve.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></picture></div>'
         + '<div class="px" style="position:absolute;top:-40px;right:-120px;font-size:clamp(180px,26vw,380px);font-weight:800;letter-spacing:-0.05em;color:'+c.watermark+';line-height:1;pointer-events:none;user-select:none;">HS</div>'
         + '<div class="heroExit" style="max-width:1080px;margin:0 auto;padding:clamp(80px,12vw,150px) clamp(20px,4vw,40px) clamp(56px,8vw,90px);position:relative;transform-origin:50% 20%;">'
-          + '<div style="animation:heroIn 0.8s cubic-bezier(0.22,1,0.36,1) both;">'
+          + '<div style="'+(booted?'':'animation:heroIn 0.8s cubic-bezier(0.22,1,0.36,1) both;')+'">'
             + '<div style="font-family:'+MONO+';font-size:13px;letter-spacing:0.1em;color:'+c.accent+';font-weight:500;margin-bottom:26px;">'+esc(t.kicker)+'</div>'
             + '<h1 style="font-size:clamp(40px,7vw,76px);line-height:1.06;margin:0;font-weight:800;letter-spacing:-0.035em;max-width:800px;text-wrap:pretty;min-height:2.2em;">'+'<span id="tw-w">'+esc(PHRASES[lang][0].a)+' </span><span id="tw-a" style="background:'+c.grad+';-webkit-background-clip:text;background-clip:text;color:transparent;">'+esc(PHRASES[lang][0].b)+'</span><span id="tw-c" style="background:'+c.accent+';" aria-hidden="true"></span></h1>'
             + '<p style="font-size:clamp(16px,2vw,18px);line-height:1.7;color:'+c.fgSoft+';margin:30px 0 0;max-width:520px;text-wrap:pretty;text-shadow:0 0 18px '+c.bg+',0 0 6px '+c.bg+';">'+esc(t.heroSub)+'</p>'
@@ -443,9 +464,10 @@
     wire(c);
     fx();
     startTw(PHRASES[lang]);
+    booted = true;
   }
 
-  var twRAF = null;
+  var twRAF = null, tw = null;
   function startTw(list) {
     if (twRAF) { cancelAnimationFrame(twRAF); twRAF = null; }
     var w = document.getElementById('tw-w'), a = document.getElementById('tw-a');
@@ -455,17 +477,18 @@
     if (reduce) { w.textContent = list[0].a + ' '; a.textContent = list[0].b; return; }
     var GL = '#%&$*+=/<>xkzmn0123456789';
     function g(k, e) { return GL.charAt((Math.floor(e / 72) + k * 5) % GL.length); }
-    var i = 0, state = 'w', t0 = performance.now() + 380;
+    // A re-render with the same phrases (theme or accordion toggle) carries on where the loop was
+    if (!tw || tw.list !== list) tw = { list: list, i: 0, state: 'w', t0: performance.now() + 380 };
     var perW = 32, perA = 44, winA = 230, hold = 2400, perD = 16, pause = 300;
-    function meta() { var p = list[i % list.length], full = p.a + ' ' + p.b, as = p.a.length + 1; return { full: full, as: as, N: full.length, aLen: full.length - as }; }
+    function meta() { var p = list[tw.i % list.length], full = p.a + ' ' + p.b, as = p.a.length + 1; return { full: full, as: as, N: full.length, aLen: full.length - as }; }
     var m = meta();
     function frame(now) {
-      var e = now - t0, full = m.full, as = m.as, N = m.N, wt = '', at = '', k, ch;
-      if (state === 'w') {
+      var e = now - tw.t0, full = m.full, as = m.as, N = m.N, wt = '', at = '', k, ch;
+      if (tw.state === 'w') {
         var wl = Math.max(0, Math.floor(e / perW)); if (wl > as) wl = as;
         wt = full.slice(0, wl); at = '';
-        if (e >= as * perW) { state = 'a'; t0 = now; }
-      } else if (state === 'a') {
+        if (e >= as * perW) { tw.state = 'a'; tw.t0 = now; }
+      } else if (tw.state === 'a') {
         wt = full.slice(0, as);
         for (k = 0; k < m.aLen; k++) {
           var s = k * perA;
@@ -474,19 +497,19 @@
           else ch = '';
           at += ch;
         }
-        if (e >= (m.aLen - 1) * perA + winA) { state = 'hold'; t0 = now; }
-      } else if (state === 'hold') {
+        if (e >= (m.aLen - 1) * perA + winA) { tw.state = 'hold'; tw.t0 = now; }
+      } else if (tw.state === 'hold') {
         wt = full.slice(0, as); at = full.slice(as);
-        if (e >= hold) { state = 'del'; t0 = now; }
+        if (e >= hold) { tw.state = 'del'; tw.t0 = now; }
       } else {
         var keep = N - Math.floor(e / perD); if (keep < 0) keep = 0;
         wt = full.slice(0, Math.min(keep, as)); at = keep > as ? full.slice(as, keep) : '';
-        if (keep <= 0) { i++; m = meta(); state = 'w'; t0 = now + pause; }
+        if (keep <= 0) { tw.i++; m = meta(); tw.state = 'w'; tw.t0 = now + pause; }
       }
       w.textContent = wt; a.textContent = at;
       twRAF = requestAnimationFrame(frame);
     }
-    twRAF = requestAnimationFrame(frame);
+    frame(performance.now());
   }
 
   function save(next) {
@@ -495,9 +518,29 @@
     render();
   }
 
+  // Theme and language switches go through the View Transitions API where available:
+  // the new theme grows as a circle out of the toggle, a language swap cross-fades.
+  function swap(next, btn) {
+    var de = document.documentElement, reduce = false, kb = false;
+    try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; kb = btn.matches(':focus-visible'); } catch (e) {}
+    var sel = 'dark' in next ? '[data-theme]' : '[data-lang="' + next.lang + '"]';
+    function update() { save(next); var n = kb && document.querySelector(sel); if (n) n.focus({ preventScroll: true }); }
+    if (!document.startViewTransition || reduce) { update(); return; }
+    if (!('dark' in next)) { document.startViewTransition(update); return; }
+    var r = btn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    var R = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    de.classList.add('vt-theme');
+    var vt = document.startViewTransition(update), done = function(){ de.classList.remove('vt-theme'); };
+    vt.ready.then(function(){
+      de.animate({ clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + R + 'px at ' + x + 'px ' + y + 'px)'] },
+        { duration: 700, easing: 'cubic-bezier(0.22,1,0.36,1)', pseudoElement: '::view-transition-new(root)' });
+    }, function(){});
+    vt.finished.then(done, done);
+  }
+
   function wire(c) {
-    document.querySelectorAll('[data-lang]').forEach(function(b){ b.onclick = function(){ save({ lang: b.getAttribute('data-lang') }); }; });
-    var th = document.querySelector('[data-theme]'); if (th) th.onclick = function(){ save({ dark: !state.dark }); };
+    document.querySelectorAll('[data-lang]').forEach(function(b){ b.onclick = function(){ var l = b.getAttribute('data-lang'); if (l !== state.lang) swap({ lang: l }, b); }; });
+    var th = document.querySelector('[data-theme]'); if (th) th.onclick = function(){ swap({ dark: !state.dark }, th); };
     document.querySelectorAll('[data-job]').forEach(function(el){
       el.onclick = function(){ var i = el.getAttribute('data-job'); state.open[i] = !state.open[i]; render(); };
       el.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); var i = el.getAttribute('data-job'); state.open[i] = !state.open[i]; render(); var n = document.querySelector('[data-job="'+i+'"]'); if (n) n.focus(); } };
@@ -508,15 +551,18 @@
       el.onmouseenter = function(){ el.style.background = c.accent; el.style.color = c.onAccent; el.style.transform = 'translateY(-3px)'; };
       el.onmouseleave = function(){ el.style.background = c.chipBg; el.style.color = c.fgSoft; el.style.transform = 'translateY(0)'; };
     });
+    if (canHover) document.querySelectorAll('.pcard').forEach(function(el){
+      el.onpointermove = function(e){ var r = el.getBoundingClientRect(); el.style.setProperty('--mx', (e.clientX - r.left) + 'px'); el.style.setProperty('--my', (e.clientY - r.top) + 'px'); };
+    });
   }
 
   var done = new WeakSet(), vio = null;
   function fx() {
     document.querySelectorAll('[data-stat]').forEach(function(el){
-      if (done.has(el)) return; done.add(el);
+      if (statsCounted || done.has(el)) return; done.add(el);
       var io = new IntersectionObserver(function(es){
         es.forEach(function(en){
-          if (!en.isIntersecting) return; io.disconnect();
+          if (!en.isIntersecting) return; io.disconnect(); statsCounted = true;
           var final = el.textContent, m = final.match(/(\d+)/); if (!m) return;
           var target = parseInt(m[1],10), t0 = performance.now(), dur = 1300;
           function step(now){ var p = Math.max(0, Math.min(1,(now-t0)/dur)), e = 1-Math.pow(1-p,3);
@@ -532,7 +578,7 @@
     document.querySelectorAll('[data-skills]').forEach(function(grid){
       var chips = [].slice.call(grid.querySelectorAll('.chip'));
       if (!chips.length) return;
-      if (reduceM) return;
+      if (reduceM || chipsShown) return;
       chips.forEach(function(el){
         el.style.opacity = '0';
         el.style.transform = 'translateY(14px) scale(0.9)';
@@ -540,7 +586,7 @@
       });
       var io = new IntersectionObserver(function(es){
         es.forEach(function(en){
-          if (!en.isIntersecting) return; io.disconnect();
+          if (!en.isIntersecting) return; io.disconnect(); chipsShown = true;
           chips.forEach(function(el, idx){
             setTimeout(function(){ el.style.opacity = '1'; el.style.transform = 'translateY(0) scale(1)'; }, idx * 34);
           });
