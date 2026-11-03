@@ -35,9 +35,9 @@
 <link rel="preload" as="image" href="assets/hero/curve-m.webp" media="(max-width: 767px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@200..800&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@200..800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@200..800&display=swap" rel="stylesheet"></noscript>
 <style>
   /* Metric-matched fallbacks: keep line breaks stable while web fonts load (no layout shift) */
   @font-face { font-family: 'Manrope Fallback'; src: local('Arial'), local('ArialMT'); font-weight: 100 650; size-adjust: 104.26%; ascent-override: 102.24%; descent-override: 28.77%; line-gap-override: 0%; }
@@ -70,7 +70,7 @@
   .si { animation: siRise 0.7s cubic-bezier(0.22,1,0.36,1) both; animation-timeline: view(); animation-range: entry 4% entry 46%; }
   @keyframes zoomIn { from { transform: scale(1.14); } to { transform: scale(1); } }
   .zoomin { animation: zoomIn linear both; animation-timeline: view(); animation-range: entry 0% cover 44%; }
-  .vwrap { overflow: hidden; border-radius: 13px; margin-bottom: 5px; }
+  .vwrap { overflow: hidden; overflow: clip; border-radius: 13px; margin-bottom: 5px; }
   .vwrap > video, .vwrap > img { margin-bottom: 0 !important; }
   @keyframes maskWipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
   .mask { animation: maskWipe linear both; animation-timeline: view(); animation-range: entry 8% entry 50%; }
@@ -80,10 +80,19 @@
   .bgfx.d { animation: bgDark linear both; animation-timeline: scroll(); }
   .bgfx.l { animation: bgLight linear both; animation-timeline: scroll(); }
   @keyframes twblink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-  #tw-c { display: inline-block; width: 0.055em; height: 0.8em; margin-left: 0.06em; vertical-align: -0.02em; border-radius: 1px; animation: twblink 1.05s steps(1) infinite; }
+  #tw-c, .twsz i { display: inline-block; width: 0.055em; height: 0.8em; margin-left: 0.06em; vertical-align: -0.02em; }
+  #tw-c { border-radius: 1px; animation: twblink 1.05s steps(1) infinite; }
+  /* Hero headline: every phrase sits hidden in one grid cell, so the box is as tall as the longest
+     phrase at any width. The live line is laid over it, so neither typing nor a scrambled word that
+     briefly runs wide can resize the box and move what is below it */
+  .twbox { position: relative; max-width: 800px; }
+  .twbox h1 { position: absolute; top: 0; left: 0; right: 0; }
+  .twsz > span { grid-area: 1 / 1; }
+  .twbox h1, .twsz { font-size: clamp(40px,7vw,76px); line-height: 1.06; font-weight: 800; letter-spacing: -0.035em; text-wrap: pretty; }
+  .twsz { display: grid; visibility: hidden; pointer-events: none; user-select: none; }
   @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: -200% 50%; } }
   #tw-a { background-size: 220% auto !important; animation: shimmer 4.8s linear infinite; }
-  @media (prefers-reduced-motion: reduce) { #tw-c { animation: none; opacity: 0.6; } #tw-a { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { #tw-c { animation: none; opacity: 0.6; } #tw-a { animation: none; } .twsz { display: none; } .twbox h1 { position: static; } }
   @keyframes growX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @keyframes growY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
   .tl { animation: growY linear both; animation-timeline: view(); animation-range: cover 0% cover 85%; transform-origin: top; }
@@ -150,6 +159,57 @@
     .pcard:hover::after { animation-play-state: running; }
   }
   @media (prefers-reduced-motion: reduce) { .pcard::after { animation: none; } }
+  /* Experience accordion: toggled in place, so the panel slides open and its text fades in */
+  .jb { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows 0.5s cubic-bezier(0.22,1,0.36,1), visibility 0.5s; }
+  .jb > div { overflow: hidden; }
+  .jb > div > div { opacity: 0; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1); }
+  [aria-expanded="true"] + .jb { grid-template-rows: 1fr; visibility: visible; }
+  [aria-expanded="true"] + .jb > div > div { opacity: 1; transform: none; transition-delay: 0.08s; }
+  .chev { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; border: 1.5px solid var(--line); color: var(--mut); background: transparent; font-size: 16px; font-weight: 600; line-height: 1; flex-shrink: 0; transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), background 0.3s, color 0.3s, border-color 0.3s; }
+  [aria-expanded="true"] .chev { transform: rotate(45deg); border-color: var(--acc); background: var(--acc); color: #fff; }
+  @media (prefers-reduced-motion: reduce) { .jb, .jb > div > div { transition: none; } }
+  /* Projects on phones: a swipeable snap row; cards fade up from the edges, a bar tracks the position */
+  .pbar { display: none; }
+  @keyframes pcSlide { entry 0% { opacity: 0.4; transform: scale(0.94); } entry 100%, exit 0% { opacity: 1; transform: none; } exit 100% { opacity: 0.4; transform: scale(0.94); } }
+  @keyframes pthumb { to { transform: translateX(calc((var(--n) - 1) * 100%)); } }
+  @media (max-width: 767px) {
+    .pgrid { --gut: clamp(20px,4vw,40px); display: flex !important; gap: 14px !important; margin: 0 calc(-1 * var(--gut)); padding: 2px var(--gut) 4px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gut); scrollbar-width: none; }
+    .pgrid::-webkit-scrollbar { display: none; }
+    .pgrid:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+    .pgrid > .si { flex: 0 0 86%; scroll-snap-align: start; }
+    @supports (animation-timeline: view()) {
+      .pgrid > .si { animation: pcSlide linear both; animation-timeline: view(inline); }
+      .pgrid .zoomin { animation-timeline: view(inline); }
+    }
+    @supports (timeline-scope: --pc) {
+      .pwrap { timeline-scope: --pc; }
+      .pgrid { scroll-timeline: --pc inline; }
+      .pbar { display: block; position: relative; height: 2px; margin-top: 20px; border-radius: 2px; overflow: hidden; }
+      .pbar i { position: absolute; top: 0; bottom: 0; left: 0; width: calc(100% / var(--n)); border-radius: inherit; animation: pthumb linear both; animation-timeline: --pc; }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) { .pgrid > .si { animation: none !important; } }
+  /* Education photos: duotone in the site palette; colour returns on hover (mouse) or as the photo scrolls in (touch) */
+  .duo { position: relative; isolation: isolate; overflow: hidden; overflow: clip; border-radius: 13px; }
+  .duo::after { content: ""; position: absolute; inset: 0; background: var(--duoS); mix-blend-mode: lighten; pointer-events: none; opacity: 0; }
+  @keyframes duoBg { from { background-color: var(--duoH); } to { background-color: #fff; } }
+  @keyframes duoImg { from { filter: grayscale(1) contrast(1.08); } to { filter: grayscale(0) contrast(1); } }
+  @keyframes duoOv { from { opacity: 1; } to { opacity: 0; } }
+  @media (hover: hover) and (pointer: fine) {
+    .duo { background-color: var(--duoH); transition: background-color 0.7s ease; }
+    .duo img { mix-blend-mode: multiply; filter: grayscale(1) contrast(1.08); transition: filter 0.7s ease; }
+    .duo::after { opacity: 1; transition: opacity 0.7s ease; }
+    .edu:hover .duo { background-color: #fff; }
+    .edu:hover .duo img { filter: grayscale(0) contrast(1); }
+    .edu:hover .duo::after { opacity: 0; }
+  }
+  @supports (animation-timeline: view()) {
+    @media (hover: none) and (prefers-reduced-motion: no-preference) {
+      .duo { animation: duoBg linear both; animation-timeline: view(); animation-range: cover 10% cover 45%; }
+      .duo img { mix-blend-mode: multiply; animation: zoomIn linear both, duoImg linear both; animation-timeline: view(), view(); animation-range: entry 0% cover 44%, cover 10% cover 45%; }
+      .duo::after { animation: duoOv linear both; animation-timeline: view(); animation-range: cover 10% cover 45%; }
+    }
+  }
 </style>
 </head>
 <body>
@@ -163,8 +223,8 @@
   } catch (e) {}
 
   var COLORS = {
-    dark: { bg:'#0F1013', fg:'#ECEEF1', fgSoft:'#A9AEB8', fgMut:'#80858E', line:'rgba(236,238,241,0.12)', navBg:'rgba(15,16,19,0.75)', accent:'#C4CAD2', accentHover:'#DCE0E6', chipBg:'#1C1F25', cardBg:'#191B20', footerBg:'#0B0C0E', watermark:'rgba(236,238,241,0.04)', grad:'linear-gradient(100deg,#FFFFFF,#CFD5DD 38%,#9198A3 72%,#EDF1F6)', onAccent:'#0F1013', spot:'rgba(255,255,255,0.1)', edge:'rgba(236,238,241,0.75)' },
-    light: { bg:'#F7F8FA', fg:'#1C2026', fgSoft:'#565D67', fgMut:'#666C76', line:'rgba(28,32,38,0.12)', navBg:'rgba(247,248,250,0.75)', accent:'#5B6470', accentHover:'#404853', chipBg:'#EDEFF2', cardBg:'#F1F3F6', footerBg:'#F1F3F6', watermark:'rgba(28,32,38,0.05)', grad:'linear-gradient(100deg,#6B7480,#5B6470 50%,#454D58)', onAccent:'#F7F8FA', spot:'rgba(255,255,255,0.9)', edge:'rgba(91,100,112,0.7)' }
+    dark: { bg:'#0F1013', fg:'#ECEEF1', fgSoft:'#A9AEB8', fgMut:'#80858E', line:'rgba(236,238,241,0.12)', navBg:'rgba(15,16,19,0.75)', accent:'#C4CAD2', accentHover:'#DCE0E6', chipBg:'#1C1F25', cardBg:'#191B20', footerBg:'#0B0C0E', watermark:'rgba(236,238,241,0.04)', grad:'linear-gradient(100deg,#FFFFFF,#CFD5DD 38%,#9198A3 72%,#EDF1F6)', onAccent:'#0F1013', spot:'rgba(255,255,255,0.1)', edge:'rgba(236,238,241,0.75)', duoS:'#15171C', duoH:'#C9CFD8' },
+    light: { bg:'#F7F8FA', fg:'#1C2026', fgSoft:'#565D67', fgMut:'#666C76', line:'rgba(28,32,38,0.12)', navBg:'rgba(247,248,250,0.75)', accent:'#5B6470', accentHover:'#404853', chipBg:'#EDEFF2', cardBg:'#F1F3F6', footerBg:'#F1F3F6', watermark:'rgba(28,32,38,0.05)', grad:'linear-gradient(100deg,#6B7480,#5B6470 50%,#454D58)', onAccent:'#F7F8FA', spot:'rgba(255,255,255,0.9)', edge:'rgba(91,100,112,0.7)', duoS:'#353B45', duoH:'#F3F5F8' }
   };
 
   var PHRASES = {
@@ -331,19 +391,17 @@
 
     var jobsHtml = d.jobs.map(function(j,i){
       var open = !!state.open[i];
-      var chev = 'display:inline-grid;place-items:center;width:30px;height:30px;border-radius:999px;border:1.5px solid '+(open?c.accent:c.line)+';color:'+(open?'#fff':c.fgMut)+';background:'+(open?c.accent:'transparent')+';font-size:16px;font-weight:600;line-height:1;transform:rotate('+(open?'45deg':'0deg')+');transition:transform 0.4s cubic-bezier(0.22,1,0.36,1),background 0.3s,color 0.3s,border-color 0.3s;flex-shrink:0;';
-      var bodyStyle = 'display:grid;grid-template-rows:'+(open?'1fr':'0fr')+';transition:grid-template-rows 0.5s cubic-bezier(0.22,1,0.36,1);';
       var clientsHtml = j.clients ? '<div style="font-size:13px;color:'+c.fgMut+';font-weight:600;margin:0 0 14px;line-height:1.6;">'+esc(t.clientsLabel)+' '+esc(j.clients)+'</div>' : '';
       var pointsHtml = j.points.map(function(p){
         return '<li style="font-size:15px;line-height:1.65;color:'+c.fgSoft+';display:flex;gap:12px;text-wrap:pretty;"><span style="color:'+c.accent+';flex-shrink:0;font-weight:800;">·</span><span>'+esc(p)+'</span></li>';
       }).join('');
-      return '<div class="rv" style="border-bottom:1px solid '+c.line+';">'
-        + '<div data-job="'+i+'" role="button" tabindex="0" aria-expanded="'+(open?'true':'false')+'" style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;cursor:pointer;padding:clamp(24px,3.4vw,32px) 0;user-select:none;">'
+      return '<div class="rv" style="border-bottom:1px solid '+c.line+';--acc:'+c.accent+';--line:'+c.line+';--mut:'+c.fgMut+';">'
+        + '<div data-job="'+i+'" role="button" tabindex="0" aria-expanded="'+(open?'true':'false')+'" aria-controls="job-'+i+'" style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;cursor:pointer;padding:clamp(24px,3.4vw,32px) 0;user-select:none;">'
           + '<div><div style="font-size:clamp(18px,2.2vw,21px);font-weight:800;letter-spacing:-0.015em;">'+esc(j.role)+'</div>'
           + '<div style="font-size:14.5px;font-weight:700;color:'+c.accent+';margin-top:5px;">'+esc(j.company)+' <span style="color:'+c.fgMut+';font-weight:600;">· '+esc(j.mode)+'</span></div></div>'
-          + '<div style="display:flex;align-items:center;gap:14px;"><div style="font-family:'+MONO+';font-size:12.5px;color:'+c.fgMut+';">'+esc(j.dates)+'</div><span style="'+chev+'">+</span></div>'
+          + '<div style="display:flex;align-items:center;gap:14px;"><div style="font-family:'+MONO+';font-size:12.5px;color:'+c.fgMut+';">'+esc(j.dates)+'</div><span class="chev" aria-hidden="true">+</span></div>'
         + '</div>'
-        + '<div style="'+bodyStyle+'"><div style="overflow:hidden;"><div style="padding-bottom:clamp(24px,3.4vw,32px);">'+clientsHtml
+        + '<div class="jb" id="job-'+i+'"><div><div style="padding-bottom:clamp(24px,3.4vw,32px);">'+clientsHtml
           + '<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px;max-width:760px;">'+pointsHtml+'</ul></div></div></div>'
         + '</div>';
     }).join('');
@@ -367,9 +425,9 @@
     }).join('');
 
     var eduHtml = d.education.map(function(e){
-      var img = e.img ? '<img src="'+e.img+'.webp" srcset="'+e.img+'-640.webp 640w, '+e.img+'.webp 1000w" sizes="(max-width: 700px) 100vw, 500px" alt="'+esc(e.alt)+'" width="1000" height="563" loading="lazy" decoding="async" class="zoomin" style="width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:13px;display:block;border:1px solid '+c.line+';background:'+c.cardBg+';margin-bottom:20px;">' : '';
+      var img = e.img ? '<div class="duo" style="--duoS:'+c.duoS+';--duoH:'+c.duoH+';border:1px solid '+c.line+';margin-bottom:20px;"><img src="'+e.img+'.webp" srcset="'+e.img+'-640.webp 640w, '+e.img+'.webp 1000w" sizes="(max-width: 700px) 100vw, 500px" alt="'+esc(e.alt)+'" width="1000" height="563" loading="lazy" decoding="async" class="zoomin" style="width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block;"></div>' : '';
       var credit = e.credit ? '<a href="'+esc(e.creditHref)+'" target="_blank" rel="noopener" class="tg" style="display:inline-block;font-family:'+MONO+';font-size:11.5px;color:'+c.fgMut+';margin-top:6px;padding:6px 0;">'+esc(t.photo)+': '+esc(e.credit)+' ↗</a>' : '';
-      return '<div class="si" style="'+(img ? '' : 'border-top:1px solid '+c.line+';padding-top:20px;')+'">'+img+'<div style="font-size:16.5px;font-weight:800;">'+esc(e.school)+'</div>'
+      return '<div class="si'+(img ? ' edu' : '')+'" style="'+(img ? '' : 'border-top:1px solid '+c.line+';padding-top:20px;')+'">'+img+'<div style="font-size:16.5px;font-weight:800;">'+esc(e.school)+'</div>'
         + '<div style="font-size:14px;font-weight:700;color:'+c.accent+';margin-top:5px;">'+esc(e.degree)+'</div>'
         + '<div style="font-family:'+MONO+';font-size:12px;color:'+c.fgMut+';margin-top:8px;line-height:1.6;">'+esc(e.meta)+'</div>'+credit+'</div>';
     }).join('');
@@ -378,7 +436,9 @@
       return '<div class="'+cls+'" aria-hidden="true" style="position:absolute;top:clamp(20px,5vw,60px);'+side+';font-size:clamp(96px,17vw,230px);font-weight:800;letter-spacing:-0.045em;color:'+c.watermark+';line-height:0.9;pointer-events:none;user-select:none;white-space:nowrap;text-transform:uppercase;z-index:0;">'+esc(text)+'</div>';
     }
     function sec(inner, wmHtml) {
-      return '<div class="sx" style="position:relative;overflow:hidden;">'+(wmHtml||'')+'<div style="position:relative;z-index:1;">'+inner+'</div></div>';
+      // overflow:clip, not hidden: a hidden box is a scroll container, and view()/scroll() timelines
+      // inside it would track that box instead of the page and sit frozen at their end state
+      return '<div class="sx" style="position:relative;overflow:hidden;overflow:clip;">'+(wmHtml||'')+'<div style="position:relative;z-index:1;">'+inner+'</div></div>';
     }
 
     var html = '<div style="position:relative;z-index:0;background:'+c.bg+';color:'+c.fg+';min-height:100vh;transition:background 0.4s,color 0.4s;overflow-x:clip;">'
@@ -405,7 +465,8 @@
         + '<div class="heroExit" style="max-width:1080px;margin:0 auto;padding:clamp(80px,12vw,150px) clamp(20px,4vw,40px) clamp(56px,8vw,90px);position:relative;transform-origin:50% 20%;">'
           + '<div style="'+(booted?'':'animation:heroIn 0.8s cubic-bezier(0.22,1,0.36,1) both;')+'">'
             + '<div style="font-family:'+MONO+';font-size:13px;letter-spacing:0.1em;color:'+c.accent+';font-weight:500;margin-bottom:26px;">'+esc(t.kicker)+'</div>'
-            + '<h1 style="font-size:clamp(40px,7vw,76px);line-height:1.06;margin:0;font-weight:800;letter-spacing:-0.035em;max-width:800px;text-wrap:pretty;min-height:2.2em;">'+'<span id="tw-w">'+esc(PHRASES[lang][0].a)+' </span><span id="tw-a" style="background:'+c.grad+';-webkit-background-clip:text;background-clip:text;color:transparent;">'+esc(PHRASES[lang][0].b)+'</span><span id="tw-c" style="background:'+c.accent+';" aria-hidden="true"></span></h1>'
+            + '<div class="twbox"><h1 style="margin:0;">'+'<span id="tw-w">'+esc(PHRASES[lang][0].a)+' </span><span id="tw-a" style="background:'+c.grad+';-webkit-background-clip:text;background-clip:text;color:transparent;">'+esc(PHRASES[lang][0].b)+'</span><span id="tw-c" style="background:'+c.accent+';" aria-hidden="true"></span></h1>'
+            + '<div class="twsz" aria-hidden="true">'+PHRASES[lang].map(function(p){ return '<span>'+esc(p.a)+' '+esc(p.b)+'<i></i></span>'; }).join('')+'</div></div>'
             + '<p style="font-size:clamp(16px,2vw,18px);line-height:1.7;color:'+c.fgSoft+';margin:30px 0 0;max-width:520px;text-wrap:pretty;text-shadow:0 0 18px '+c.bg+',0 0 6px '+c.bg+';">'+esc(t.heroSub)+'</p>'
             + '<div class="hcta" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:40px;">'
               + '<a href="mailto:sagirogluhakan@outlook.com" data-mag="1" style="font-size:14px;font-weight:700;padding:14px 28px;border-radius:999px;background:'+c.grad+';color:'+c.onAccent+';transition:transform 0.25s cubic-bezier(0.22,1,0.36,1);">'+esc(t.ctaPrimary)+'</a>'
@@ -439,7 +500,8 @@
       // PROJECTS
       + sec('<div style="max-width:1080px;margin:0 auto;padding:clamp(70px,10vw,130px) clamp(20px,4vw,40px) 0;">'
         + '<div class="mask" style="font-size:13px;font-weight:700;color:'+c.accent+';margin-bottom:28px;">'+esc(t.projLabel)+'</div>'
-        + '<div class="pgrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:18px;">'+projHtml+'</div>'
+        + '<div class="pwrap"><div class="pgrid" role="region" aria-label="'+esc(t.projLabel)+'" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:18px;">'+projHtml+'</div>'
+        + '<div class="pbar" aria-hidden="true" style="--n:'+d.projects.length+';background:'+c.line+';"><i style="background:'+c.grad+';"></i></div></div>'
       + '</div>', wm(t.projLabel, 'left:clamp(-46px,-3vw,-12px)', 'px2'))
       // EDUCATION
       + sec('<div style="max-width:1080px;margin:0 auto;padding:clamp(70px,10vw,130px) clamp(20px,4vw,40px) clamp(80px,12vw,140px);">'
@@ -472,18 +534,21 @@
     if (twRAF) { cancelAnimationFrame(twRAF); twRAF = null; }
     var w = document.getElementById('tw-w'), a = document.getElementById('tw-a');
     if (!w || !a || !list || !list.length) return;
+    var h = w.parentNode, sz = h.nextElementSibling;
     var reduce = false;
     try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
     if (reduce) { w.textContent = list[0].a + ' '; a.textContent = list[0].b; return; }
     var GL = '#%&$*+=/<>xkzmn0123456789';
     function g(k, e) { return GL.charAt((Math.floor(e / 72) + k * 5) % GL.length); }
     // A re-render with the same phrases (theme or accordion toggle) carries on where the loop was
-    if (!tw || tw.list !== list) tw = { list: list, i: 0, state: 'w', t0: performance.now() + 380 };
+    if (!tw || tw.list !== list) tw = { list: list, i: 0, state: 'w', t0: performance.now() + 380, waved: false };
+    var wave = null;
     var perW = 32, perA = 44, winA = 230, hold = 2400, perD = 16, pause = 300;
     function meta() { var p = list[tw.i % list.length], full = p.a + ' ' + p.b, as = p.a.length + 1; return { full: full, as: as, N: full.length, aLen: full.length - as }; }
     var m = meta();
     function frame(now) {
       var e = now - tw.t0, full = m.full, as = m.as, N = m.N, wt = '', at = '', k, ch;
+      if (!m.prep && (tw.state === 'w' || tw.state === 'a')) m.prep = wavePrep(h, full);
       if (tw.state === 'w') {
         var wl = Math.max(0, Math.floor(e / perW)); if (wl > as) wl = as;
         wt = full.slice(0, wl); at = '';
@@ -500,16 +565,96 @@
         if (e >= (m.aLen - 1) * perA + winA) { tw.state = 'hold'; tw.t0 = now; }
       } else if (tw.state === 'hold') {
         wt = full.slice(0, as); at = full.slice(as);
+        if (!tw.waved) {
+          if (!wave) wave = waveBuild(w, a, wt, at);
+          if (wave && waveStep(wave, e)) { twRAF = requestAnimationFrame(frame); return; }
+          tw.waved = true; wave = null;
+        }
         if (e >= hold) { tw.state = 'del'; tw.t0 = now; }
       } else {
         var keep = N - Math.floor(e / perD); if (keep < 0) keep = 0;
         wt = full.slice(0, Math.min(keep, as)); at = keep > as ? full.slice(as, keep) : '';
-        if (keep <= 0) { tw.i++; m = meta(); tw.state = 'w'; tw.t0 = now + pause; }
+        if (keep <= 0) { tw.i++; m = meta(); tw.state = 'w'; tw.t0 = now + pause; tw.waved = false; }
       }
       w.textContent = wt; a.textContent = at;
+      // A scrambled glyph can run wider than its letter and push a word onto a line the box has no
+      // room for; when it would, that frame shows the real letters instead
+      if (tw.state === 'a' && sz && h.offsetHeight > sz.offsetHeight) a.textContent = full.slice(as, as + at.length);
       twRAF = requestAnimationFrame(frame);
     }
     frame(performance.now());
+  }
+
+  // Weight wave: once a phrase is typed out, a dip in font weight (Manrope is variable) runs through
+  // it letter by letter. Each letter's letter-spacing makes up for its narrower glyph, so the line
+  // keeps its exact width: nothing reflows and no other letter moves.
+  var WAVE = { lo: 300, step: 20, delay: 220, len: 300, end: 2100 }, waveAdv = {};
+  function waveReady(fs, text) {
+    var ready = false;
+    try {
+      document.fonts.forEach(function(f){ if (f.family.replace(/["']/g, '') === 'Manrope' && f.status === 'loaded') ready = true; });
+      return ready && document.fonts.check('800 ' + fs + ' Manrope', text);
+    } catch (e) { return false; }
+  }
+  // glyph advance of each letter at each weight, measured in a hidden row and kept per font size;
+  // each letter is its own inline-block so it is shaped alone, with no kerning against its neighbour
+  function waveMeasure(fs, chars, weights) {
+    var adv = waveAdv[fs] || (waveAdv[fs] = {}), box = document.createElement('div'), kids = box.children, i = 0;
+    box.style.cssText = 'position:absolute;left:-9999px;top:0;visibility:hidden;white-space:pre;letter-spacing:0;font-size:' + fs;
+    chars.forEach(function(ch){ weights.forEach(function(v){ var m = document.createElement('span'); m.style.cssText = 'display:inline-block;font-weight:' + v; m.textContent = ch; box.appendChild(m); }); });
+    document.body.appendChild(box);
+    chars.forEach(function(ch){ var row = adv[ch] || (adv[ch] = {}); weights.forEach(function(v){ row[v] = kids[i++].getBoundingClientRect().width; }); });
+    box.remove();
+  }
+  // letters of the text that are still missing a weight (rows fill up from light to bold)
+  function waveTodo(fs, text) {
+    var adv = waveAdv[fs] || {}, todo = [], k, ch;
+    for (k = 0; k < text.length; k++) { ch = text.charAt(k); if (ch !== ' ' && todo.indexOf(ch) < 0 && !(adv[ch] && adv[ch][800] !== undefined)) todo.push(ch); }
+    return todo;
+  }
+  // Runs on the typing frames: measures one weight step for the phrase's letters per frame, so the
+  // wave finds them ready instead of shaping every weight in one long frame. True once all are in.
+  function wavePrep(h, text) {
+    var fs = getComputedStyle(h).fontSize, todo, adv, v, miss;
+    if (!waveReady(fs, text)) return false;
+    todo = waveTodo(fs, text); adv = waveAdv[fs] || {};
+    for (v = WAVE.lo; v <= 800; v += WAVE.step) {
+      miss = todo.filter(function(ch){ return !adv[ch] || adv[ch][v] === undefined; });
+      if (miss.length) { waveMeasure(fs, miss, [v]); return false; }
+    }
+    return true;
+  }
+  function waveBuild(w, a, wt, at) {
+    var fs = getComputedStyle(w.parentNode).fontSize, k, v, todo, ws = [];
+    if (!waveReady(fs, wt + at)) return null;
+    var spans = [];
+    [[w, wt], [a, at]].forEach(function(p){
+      p[0].textContent = '';
+      for (k = 0; k < p[1].length; k++) {
+        var ch = p[1].charAt(k);
+        if (ch === ' ') { p[0].appendChild(document.createTextNode(' ')); continue; }
+        var s = document.createElement('span'); s.textContent = ch; p[0].appendChild(s); spans.push(s);
+      }
+    });
+    // whatever the typing frames did not get to (the font arrived late, the window was resized) is measured now
+    todo = waveTodo(fs, wt + at);
+    if (todo.length) { for (v = WAVE.lo; v <= 800; v += WAVE.step) ws.push(v); waveMeasure(fs, todo, ws); }
+    var target = spans.map(function(s){ return s.getBoundingClientRect().width; });
+    return { spans: spans, target: target, adv: waveAdv[fs], cur: [], gap: Math.min(40, (WAVE.end - WAVE.delay - WAVE.len) / spans.length) };
+  }
+  // Sets each letter's weight for time e into the hold; returns false once the dip has passed the last letter
+  function waveStep(wv, e) {
+    var busy = false, k, d, f, v, s;
+    for (k = 0; k < wv.spans.length; k++) {
+      d = (e - WAVE.delay - k * wv.gap) / WAVE.len;
+      if (d < 1) busy = true;
+      f = d > -1 && d < 1 ? (1 + Math.cos(Math.PI * d)) / 2 : 0;
+      v = 800 - Math.round(f * (800 - WAVE.lo) / WAVE.step) * WAVE.step;
+      if (v === wv.cur[k]) continue;
+      wv.cur[k] = v; s = wv.spans[k];
+      s.style.fontWeight = v; s.style.letterSpacing = (wv.target[k] - wv.adv[s.textContent][v]) + 'px';
+    }
+    return busy;
   }
 
   function save(next) {
@@ -538,13 +683,23 @@
     vt.finished.then(done, done);
   }
 
+  // The project row scrolls sideways on phones: make it reachable by keyboard only while it scrolls
+  function pgFocus() {
+    var pg = document.querySelector('.pgrid'); if (!pg) return;
+    if (pg.scrollWidth > pg.clientWidth + 1) pg.setAttribute('tabindex', '0'); else pg.removeAttribute('tabindex');
+  }
+  try { window.matchMedia('(max-width: 767px)').addEventListener('change', pgFocus); } catch (e) {}
+
   function wire(c) {
     document.querySelectorAll('[data-lang]').forEach(function(b){ b.onclick = function(){ var l = b.getAttribute('data-lang'); if (l !== state.lang) swap({ lang: l }, b); }; });
     var th = document.querySelector('[data-theme]'); if (th) th.onclick = function(){ swap({ dark: !state.dark }, th); };
+    // Accordion rows toggle in place (no re-render), so the CSS open/close transition plays
     document.querySelectorAll('[data-job]').forEach(function(el){
-      el.onclick = function(){ var i = el.getAttribute('data-job'); state.open[i] = !state.open[i]; render(); };
-      el.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); var i = el.getAttribute('data-job'); state.open[i] = !state.open[i]; render(); var n = document.querySelector('[data-job="'+i+'"]'); if (n) n.focus(); } };
+      function toggle() { var i = el.getAttribute('data-job'); state.open[i] = !state.open[i]; el.setAttribute('aria-expanded', state.open[i] ? 'true' : 'false'); }
+      el.onclick = toggle;
+      el.onkeydown = function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } };
     });
+    pgFocus();
     var canHover = true;
     try { canHover = window.matchMedia('(hover: hover)').matches; } catch (e) {}
     if (canHover) document.querySelectorAll('.chip').forEach(function(el){
